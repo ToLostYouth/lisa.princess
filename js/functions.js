@@ -92,25 +92,68 @@ function startHeartAnimation() {
 	};
 })(jQuery);
 
+function getMaxDay(year, month) {
+	return new Date(year, month, 0).getDate();
+}
+
 function timeElapse(date){
-	var current = Date();
-	var seconds = (Date.parse(current) - Date.parse(date)) / 1000;
-	var days = Math.floor(seconds / (3600 * 24));
-	seconds = seconds % (3600 * 24);
-	var hours = Math.floor(seconds / 3600);
-	if (hours < 10) {
-		hours = "0" + hours;
+	var current = new Date();
+
+	var day_current = current.getDate();
+	var month_current = current.getMonth();
+	var year_current = current.getFullYear();
+
+	var day_special = date.getDate();
+	var month_special = date.getMonth();
+	var year_special = date.getFullYear();
+
+	var days = day_current-day_special;
+	var months = month_current-month_special;
+	var years = year_current-year_special;
+
+	if (months < 0 ) { // adjust the years
+		years = years - 1;
+		months = month_current-month_special+12;
 	}
-	seconds = seconds % 3600;
-	var minutes = Math.floor(seconds / 60);
-	if (minutes < 10) {
-		minutes = "0" + minutes;
+
+	if (days < 0 ) { // adjust the months and days
+		months = months - 1;
+		days = day_current - day_special
+				+ getMaxDay(year_special, month_special);
 	}
-	seconds = seconds % 60;
-	if (seconds < 10) {
-		seconds = "0" + seconds;
+
+	var result = "";
+	if (months == 0 && days == 0) {
+		$("#head").html("");
+		$("#anniversary").html("Lisa Princess & Waterstrong<br/>Happy <span class=\"digit\">" + (years) + "</span>th Anniversary");
+		result = "";
+		$("#loveu").html("");
+	} else {
+		var seconds = (Date.parse(current) - Date.parse(date))/1000;
+		seconds = seconds % (3600 * 24);
+		var hours = Math.floor(seconds / 3600);
+		if (hours < 10) {
+			hours = "0" + hours;
+		}
+		seconds = seconds % 3600;
+		var minutes = Math.floor(seconds / 60);
+		if (minutes < 10) {
+			minutes = "0" + minutes;
+		}
+		seconds = seconds % 60;
+		if (seconds < 10) {
+			seconds = "0" + seconds;
+		}
+		$("#head").html("Dear Lisa Princess, we have been in love for<br/><br/>");
+		$("#anniversary").html("");
+		result = "<span class=\"digit\">" + years + "</span> year \
+		<span class=\"digit\">" + months + "</span> month \
+		<span class=\"digit\">" + days + "</span> day \
+		<span class=\"digit\">" + hours + "</span> hr \
+		<span class=\"digit\">" + minutes + "</span> min \
+		<span class=\"digit\">" + seconds + "</span> sec";
 	}
-	var result = "<span class=\"digit\">" + days + "</span> days <span class=\"digit\">" + hours + "</span> hours <span class=\"digit\">" + minutes + "</span> minutes <span class=\"digit\">" + seconds + "</span> seconds";
+
 	$("#elapseClock").html(result);
 }
 
