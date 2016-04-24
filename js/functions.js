@@ -125,7 +125,7 @@ function timeElapse(date){
 	var result = "";
 	if (months == 0 && days == 0) {
 		$("#head").html("");
-		$("#anniversary").html("Lisa Princess & Waterstrong<br/>Happy <span class=\"digit\">" + (years) + "</span>th Anniversary");
+		$("#anniversary").html("Dear Lisa&Waterstrong<br/><br/>Happy <span class=\"digit\">" + (years) + "</span>th Anniversary");
 		result = "";
 		$("#loveu").html("");
 	} else {
